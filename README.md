@@ -1,3 +1,15 @@
+Forked from https://github.com/w23/obs-kmsgrab "obs-27-fixes" branch, which
+apparently isn't actively maintained.
+
+https://github.com/w23/obs-kmsgrab/tree/obs-27-fixes
+
+Today (2022-11-25) I use the following configuration and it appears to be
+working fine.
+
+ - Gentoo Linux's obs-studio package (media-video/obs-studio-28.1.2-r1)
+ - A Radeon RX 6000 series graphic card
+ - X11
+
 # linux-kmsgrab plugin for OBS
 
 ## Introduction
