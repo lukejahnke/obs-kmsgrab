@@ -159,6 +159,7 @@ static int responseAppendFramebuffer(response_data_t *data, const struct drm_mod
 		return -1;
 	}
 
+	fb->fb_id = drmfb->fb_id;
 	fb->width = drmfb->width;
 	fb->height = drmfb->height;
 	fb->fourcc = drmfb->pixel_format;
