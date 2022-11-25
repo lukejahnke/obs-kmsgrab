@@ -65,11 +65,15 @@ static int dmabuf_source_receive_framebuffers(const char *dri_filename, dmabuf_s
 	struct sockaddr_un addr = {0};
 	addr.sun_family = AF_UNIX;
 	{
-		const char *const module_path =
-			obs_get_module_data_path(obs_current_module());
-		assert(module_path);
+		char *module_path =
+			obs_module_get_config_path(obs_current_module(), "");
+		if (!module_path) {
+			blog(LOG_ERROR, "obs_module_get_config_path() errored");
+			return 0;
+		}
 		if (!os_file_exists(module_path)) {
 			if (MKDIR_ERROR == os_mkdir(module_path)) {
+				bfree(module_path);
 				blog(LOG_ERROR, "Unable to create directory %s",
 				     module_path);
 				return 0;
@@ -79,6 +83,7 @@ static int dmabuf_source_receive_framebuffers(const char *dri_filename, dmabuf_s
 		const int module_path_len = strlen(module_path);
 		if (module_path_len + socket_filename_len + 1 >=
 		    (int)sizeof(addr.sun_path)) {
+			bfree(module_path);
 			blog(LOG_ERROR, "Socket filename is too long, max %d",
 			     (int)sizeof(addr.sun_path));
 			return 0;
@@ -86,6 +91,7 @@ static int dmabuf_source_receive_framebuffers(const char *dri_filename, dmabuf_s
 		memcpy(addr.sun_path, module_path, module_path_len);
 		memcpy(addr.sun_path + module_path_len, socket_filename,
 		       socket_filename_len);
+		bfree(module_path);
 
 		blog(LOG_DEBUG, "Will bind socket to %s", addr.sun_path);
 	}
