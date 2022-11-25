@@ -389,7 +389,7 @@ static void dmabuf_source_open(dmabuf_source_t *ctx, uint32_t fb_id)
 static void dmabuf_source_update(void *data, obs_data_t *settings)
 {
 	dmabuf_source_t *ctx = data;
-	blog(LOG_DEBUG, "dmabuf_source_udpate", ctx);
+	blog(LOG_DEBUG, "dmabuf_source_udpate %p", ctx);
 
 	ctx->show_cursor = obs_data_get_bool(settings, "show_cursor");
 
@@ -498,6 +498,7 @@ static void dmabuf_source_render(void *data, gs_effect_t *effect)
 
 static bool dri_device_selected(void *data, obs_properties_t *props, obs_property_t *p, obs_data_t *settings)
 {
+	(void)p;
 	blog(LOG_DEBUG, "dri_device_selected");
 	dmabuf_source_t *ctx = data;
 
@@ -538,6 +539,7 @@ static obs_properties_t *dmabuf_source_get_properties(void *data)
 	blog(LOG_DEBUG, "dmabuf_source_get_properties %p", ctx);
 
 	dmabuf_source_fblist_t stack_list = {0};
+	(void)stack_list;
 
 	obs_properties_t *props = obs_properties_create();
 	obs_property_t *dri_device_list;
