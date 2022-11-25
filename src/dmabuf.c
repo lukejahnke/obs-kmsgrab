@@ -51,7 +51,7 @@ static int dmabuf_source_receive_framebuffers(dmabuf_source_fblist_t *list)
 {
 	const char *dri_filename = "/dev/dri/card0"; // FIXME
 
-	blog(LOG_DEBUG, "dmabuf_source_receive_framebuffers");
+	blog(LOG_INFO, "dmabuf_source_receive_framebuffers");
 
 	int retval = 0;
 	int sockfd = -1;
@@ -320,21 +320,18 @@ static void dmabuf_source_close(dmabuf_source_t *ctx)
 	ctx->active_fb = -1;
 }
 
-static void dmabuf_source_open(dmabuf_source_t *ctx, uint32_t fb_id)
+static void dmabuf_source_open(dmabuf_source_t *ctx, int index)
 {
-	blog(LOG_DEBUG, "dmabuf_source_open %p %#x", ctx, fb_id);
+	blog(LOG_DEBUG, "dmabuf_source_open %p %d", ctx, index);
 	assert(ctx->active_fb == -1);
 
-	int index;
-	for (index = 0; index < ctx->fbs.resp.num_framebuffers; ++index)
-		if (fb_id == ctx->fbs.resp.framebuffers[index].fb_id)
-			break;
-
-	if (index == ctx->fbs.resp.num_framebuffers) {
-		blog(LOG_ERROR, "Framebuffer id=%#x not found", fb_id);
+	if (index >= ctx->fbs.resp.num_framebuffers) {
+		blog(LOG_ERROR, "Framebuffer index=%d not found (num_framebuffers=%d)",
+		     index, ctx->fbs.resp.num_framebuffers);
 		return;
 	}
 
+	uint32_t fb_id = ctx->fbs.resp.framebuffers[index].fb_id;
 	blog(LOG_DEBUG, "Using framebuffer id=%#x (index=%d)", fb_id, index);
 
 	const drmsend_framebuffer_t *fb = ctx->fbs.resp.framebuffers + index;
@@ -523,7 +520,7 @@ static obs_properties_t *dmabuf_source_get_properties(void *data)
 			stack_list.resp.framebuffers + i;
 		char buf[128];
 		sprintf(buf, "%dx%d (%#x)", fb->width, fb->height, fb->fb_id);
-		obs_property_list_add_int(fb_list, buf, fb->fb_id);
+		obs_property_list_add_int(fb_list, buf, i);
 	}
 
 	dmabuf_source_close_fds(ctx);
