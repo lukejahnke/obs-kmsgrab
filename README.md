@@ -1,3 +1,19 @@
+Forked from https://github.com/rhenium/obs-kmsgrab "master" branch, which
+apparently isn't actively maintained.
+
+Today (2025-06-20) it appears to work fine on Fedora 42.
+Note that the `/dev/dri/card1` is hardcoded inside `src/dmabuf.c`, which
+may not match your system (card0 is more likely?). The Dockerfile also
+disables polkit, so setcap must be used.
+
+To use the Dockerfile, docker build, docker run, and copy the two files (
+`/obs-kmsgrab/linux-kmsgrab-send` and `/obs-kmsgrab/linux-kmsgrab.so` ) out
+of docker container to host. They should both be placed inside the directory
+/usr/lib64/obs-plugins/ . Then setcap the linux-kmsgrab-send binary if you
+do not use polkit.
+
+----
+
 Forked from https://github.com/w23/obs-kmsgrab "obs-27-fixes" branch, which
 apparently isn't actively maintained.
 

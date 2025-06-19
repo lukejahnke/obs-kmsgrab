@@ -48,7 +48,7 @@ static const int socket_filename_len = sizeof(socket_filename) - 1;
 
 static int dmabuf_source_receive_framebuffers(dmabuf_source_fblist_t *list)
 {
-	const char *dri_filename = "/dev/dri/card0"; // FIXME
+	const char *dri_filename = "/dev/dri/card1"; // FIXME
 
 	blog(LOG_INFO, "dmabuf_source_receive_framebuffers");
 
