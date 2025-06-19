@@ -4,7 +4,6 @@
 #include "drm-helpers.h"
 
 #include <graphics/graphics.h>
-#include <graphics/graphics-internal.h>
 
 #include <obs-module.h>
 #include <obs-nix-platform.h>
